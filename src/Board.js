@@ -91,7 +91,7 @@
       }
     },
 
-    // test if any rows on this board contain conflicts
+    //test if any rows on this board contain conflicts
     hasAnyRowConflicts: function() {
       for (var i = 0; i < Object.keys(this.attributes).length-1; i++) {
         if(this.hasRowConflictAt([i])){
@@ -108,7 +108,6 @@
     //
     // test if a specific column on this board contains a conflict
     hasColConflictAt: function(colIndex) {
-      debugger;
       var count=0;
       for (var i = 0; i <Object.keys(this.attributes).length-1; i++) {
         if (this.attributes[i][colIndex]===1){
@@ -121,7 +120,7 @@
       return false;
     },
 
-    // test if any columns on this board contain conflicts
+    //test if any columns on this board contain conflicts
     hasAnyColConflicts: function() {
       for (var i = 0; i < Object.keys(this.attributes).length-1; i++) {
         if (this.hasColConflictAt(i)){
@@ -138,11 +137,28 @@
     //
     // test if a specific major diagonal on this board contains a conflict
     hasMajorDiagonalConflictAt: function(majorDiagonalColumnIndexAtFirstRow) {
-      return false; // fixme
+      var count=0;
+      debugger;
+      var currentRow = this.attributes[majorDiagonalColumnIndexAtFirstRow];
+      for (var i = 0; i < currentRow.length; i++) {
+        if (this.attributes[i][majorDiagonalColumnIndexAtFirstRow++]===1){
+          count++;
+        }
+        if (count>1){
+          return true;
+        }
+      }
+      return false;
     },
 
     // test if any major diagonals on this board contain conflicts
     hasAnyMajorDiagonalConflicts: function() {
+
+      for (var j = 0; j <this.attributes['n'].length-1; j++) {
+        if (this.hasMajorDiagonalConflictAt(j)){
+          return true;
+        }
+      }
       return false; // fixme
     },
 
@@ -153,11 +169,25 @@
     //
     // test if a specific minor diagonal on this board contains a conflict
     hasMinorDiagonalConflictAt: function(minorDiagonalColumnIndexAtFirstRow) {
-      return false; // fixme
+      var count=0;
+      for (var i = 0; i< Object.keys(this.attributes).length-1; i++) {
+        if (this.attributes[i][minorDiagonalColumnIndexAtFirstRow--]===1){
+          count++;
+        }
+        if (count>1){
+          return true;
+        }
+      }
+      return false;
     },
 
     // test if any minor diagonals on this board contain conflicts
     hasAnyMinorDiagonalConflicts: function() {
+      for (var j = Object.keys(this.attributes).length-2; j >= 0; j--) {
+        if (this.hasMinorDiagonalConflictAt(j)){
+          return true;
+        }
+      }
       return false; // fixme
     }
 
